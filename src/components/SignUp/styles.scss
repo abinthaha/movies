@@ -1,0 +1,23 @@
+@import '../../styles/index.scss';
+
+.form-wrapper {
+    margin-top: 100px;
+
+    form {
+        .header {
+            font-size: $large;
+            text-align: center;
+            margin-top: 0;
+        }
+
+        margin: 10px auto;
+        max-width: 500px;
+        padding: 20px 30px;
+        border-radius: 10px;
+        box-shadow: 0px 0px 2px 4px $light_gray;
+
+        .MuiFormControl-root {
+            margin-bottom: 20px;
+        }
+    }
+}

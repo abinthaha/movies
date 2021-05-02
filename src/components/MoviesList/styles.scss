@@ -1,0 +1,19 @@
+@import '../../styles/index.scss';
+
+.header {
+    font-size: $large;
+}
+
+form {
+    margin: 10px auto;
+    max-width: 500px;
+
+    .MuiFormControl-root {
+        margin-bottom: 20px;
+    }
+}
+
+#profile {
+    width: 100%;
+    height: 600px;
+}
