@@ -23,12 +23,27 @@ class MoviesSearchComponent extends React.Component {
       movie: "",
       year: "",
       dataRow: [],
+      userName: "",
       iframeClicked: false,
     };
   }
 
   componentDidMount = () => {
-    var iframe = document.getElementById("profile");
+    const { location } = this.props;
+    if (
+      location &&
+      location.state &&
+      location.state.data &&
+      location.state.data.name
+    ) {
+      this.setState({
+        ...this.state,
+        userName: location.state.data.name,
+      });
+    } else {
+      this.props.history.push("/login");
+    }
+
     var myConfObj = {
       iframeMouseOver: false,
     };
@@ -90,11 +105,11 @@ class MoviesSearchComponent extends React.Component {
   };
 
   render() {
-    const { movie, year, dataRow, iframeClicked } = this.state;
+    const { movie, year, dataRow, iframeClicked, userName } = this.state;
     const imgSrc = dataRow.filter((item) => item.id === "Poster");
     return (
       <main>
-        <HeaderComponent />
+        <HeaderComponent userName={userName} />
         <Container fixed>
           <h4>Is iframe clicked: {iframeClicked ? "Clicked" : "No"}</h4>
           <iframe

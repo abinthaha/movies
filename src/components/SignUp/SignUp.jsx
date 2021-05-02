@@ -7,8 +7,10 @@ import {
   InputLabel,
   Button,
 } from "@material-ui/core";
-import { Link } from 'react-router-dom';
-import usersData from "../../data/users";
+import { Link } from "react-router-dom";
+import { store } from "../../store";
+import { addUser } from "../../redux/action";
+import PositionedSnackbar from "../../common/Toaster/Toaster";
 
 class SignUpComponent extends React.Component {
   constructor(props) {
@@ -17,14 +19,32 @@ class SignUpComponent extends React.Component {
       username: "",
       firstName: "",
       password: "",
-      userData: usersData,
+      isSnackBarOpen: false,
+      snackBarMessage: "",
     };
   }
 
   onSubmit = (ev) => {
     ev.preventDefault();
     ev.stopPropagation();
-    let { username, password, userData } = this.state;
+    let { username, password, firstName } = this.state;
+    store.dispatch(
+      addUser({
+        name: firstName,
+        username: username,
+        password: password,
+      })
+    );
+    this.setState(
+      {
+        ...this.state,
+        isSnackBarOpen: true,
+        snackBarMessage: "User added",
+      },
+      () => {
+        this.props.history.push("/login");
+      }
+    );
   };
 
   onInputChange = (type, ev) => {
@@ -33,15 +53,35 @@ class SignUpComponent extends React.Component {
     });
   };
 
+  closeSnackBar = () => {
+    this.setState(
+      {
+        isSnackBarOpen: false,
+      },
+      () => {}
+    );
+  };
+
   render() {
-    const { username, password, firstName } = this.state;
+    const {
+      username,
+      password,
+      firstName,
+      isSnackBarOpen,
+      snackBarMessage,
+    } = this.state;
 
     return (
       <section className="form-wrapper">
         <form onSubmit={(ev) => this.onSubmit(ev)}>
           <h4 className="header">SIGN UP</h4>
+          <PositionedSnackbar
+            open={isSnackBarOpen}
+            message={snackBarMessage}
+            closeSnackBar={this.closeSnackBar}
+          />
           <FormGroup>
-          <FormControl>
+            <FormControl>
               <InputLabel htmlFor="name">Name</InputLabel>
               <Input
                 id="firstName"
@@ -75,8 +115,8 @@ class SignUpComponent extends React.Component {
                 SIGN UP
               </Button>
             </FormControl>
-            <FormControl className='sign-up-wrapper'>
-              <Link to='/login'>Login</Link>
+            <FormControl className="sign-up-wrapper">
+              <Link to="/login">Login</Link>
             </FormControl>
           </FormGroup>
         </form>
